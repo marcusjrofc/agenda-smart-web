@@ -1,42 +1,39 @@
-# 📅 Portal de Cadastro e Agendamento
+# Portal de Cadastro & Agendamento
 
-Uma aplicação web front-end completa construída do zero, focada na experiência do utilizador, validação de dados em tempo real e agendamento dinâmico. 
+Aplicação web front-end para cadastro de usuários com busca automática de endereço via CEP, validação de senha em tempo real, seleção de data em calendário interativo e registro de agendamentos na tela.
 
-Este projeto integra lógicas avançadas de validação e consumo de APIs utilizando puramente tecnologias nativas (Vanilla), reaproveitando conceitos previamente estruturados em scripts Python e agora adaptados para a web.
+🔗 **Acesse o projeto online:** [https://agenda-smart-web.vercel.app/](https://agenda-smart-web.vercel.app/)
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
-### 1. Formulário de Endereço Inteligente
-- Máscara automática de CEP durante a digitação.
-- Consumo da **API ViaCEP** (`fetch` API) para preenchimento assíncrono de Logradouro, Bairro, Cidade e Estado.
-- Feedback visual de status (buscando, não encontrado, erro).
+- **Consulta automática de CEP (ViaCEP):** Formatação automática do CEP e preenchimento dos campos de rua, bairro, cidade e estado.
+- **Validação de senha:** Verificação em tempo real dos requisitos de segurança (mínimo de 8 caracteres, letra maiúscula e minúscula, número, caractere especial e bloqueio de termos proibidos como `"senha"` e `"123456"`), botão para mostrar/ocultar a senha e alerta caso alguma regra seja quebrada no envio.
+- **Calendário interativo:** Navegação entre meses e seleção da data desejada para o agendamento.
+- **Registro de agendamentos:** Exibição da lista de agendamentos realizados (com nome, CEP e data escolhida) e alerta de confirmação ao enviar o formulário.
 
-### 2. Validador de Senha Dinâmico
-- Validação em tempo real (Regex) de requisitos de segurança:
-  - Mínimo de 8 caracteres.
-  - Pelo menos uma letra maiúscula e uma minúscula.
-  - Pelo menos um número.
-  - Pelo menos um caractere especial.
-  - Restrição de palavras comuns (ex: "senha", "123456").
-- Botão interativo para revelar/ocultar a senha (👁️).
+## Tecnologias Utilizadas
 
-### 3. Calendário Interativo Nativo
-- Geração dinâmica da grelha de dias do mês atual usando o objeto `Date` do JavaScript.
-- Navegação fluida entre os meses (avançar e recuar).
-- Seleção de datas com atualização de status diretamente no formulário de agendamento.
+- HTML5
+- CSS3
+- JavaScript (Vanilla)
+- [API ViaCEP](https://viacep.com.br/)
+- Deploy via Vercel
 
-### 4. Interface e Experiência (UI/UX)
-- Design limpo e moderno.
-- 100% responsivo: adaptado perfeitamente para dispositivos móveis através de *Media Queries*.
+## Estrutura do Projeto
 
-## 🛠️ Tecnologias Utilizadas
+```text
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── script.js
+└── README.md
+```
 
-- **HTML5:** Estrutura semântica do portal.
-- **CSS3:** Estilização, Flexbox, CSS Grid e responsividade.
-- **JavaScript (Vanilla):** Manipulação do DOM, requisições HTTP assíncronas e lógica de negócio.
+## Como Executar
 
-## ⚙️ Como Executar o Projeto
-
-1. Clone o repositório para a sua máquina local:
+1. Clone o repositório:
    ```bash
-   git clone [https://github.com/marcusjrofc/nome-do-repositorio.git](https://github.com/marcusjrofc/nome-do-repositorio.git)
+   git clone [https://github.com/SEU-USUARIO/agenda-smart-web.git](https://github.com/SEU-USUARIO/agenda-smart-web.git)
+   ```
+2. Abra o arquivo `index.html` diretamente no navegador (ou utilize a extensão **Live Server** no VS Code).

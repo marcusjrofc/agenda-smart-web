@@ -15,38 +15,38 @@ const req_maiuscula = document.getElementById('req-maiuscula')
 const req_numero = document.getElementById('req-numero')
 const req_simbolo = document.getElementById('req-simbolo')
 const req_proibidas = document.getElementById('req-proibidas')
-const btn_mostrar_senha = document.getElementById('btn-mostrar-senha');
+const btn_mostrar_senha = document.getElementById('btn-mostrar-senha')
 
-// Calendário e Resumo
+// Calendário, Resumo e Registros
 const mes_anterior = document.getElementById('mes-anterior')
 const mes_ano = document.getElementById('mes-ano')
 const mes_proximo = document.getElementById('mes-proximo')
 const grid_dias = document.getElementById('grid-dias')
 const data_escolhida = document.getElementById('data-escolhida')
+const lista_agendamentos = document.getElementById('lista-agendamentos')
 
-
-// Verificaçõ de CEP
-cep.addEventListener('input', function(e){
-    let valor = e.target.value.replace(/\D/g,'')
-    if(valor.length > 8){
-        valor = valor.slice(0,8)
+// 1. Verificação de CEP
+cep.addEventListener('input', function (e) {
+    let valor = e.target.value.replace(/\D/g, '')
+    if (valor.length > 8) {
+        valor = valor.slice(0, 8)
     }
 
     const cepLimpo = valor
 
-    if(valor.length > 5){
+    if (valor.length > 5) {
         valor = valor.replace(/^(\d{5})(\d)/, '$1-$2')
     }
     e.target.value = valor
 
-    if(cepLimpo.length === 8){
+    if (cepLimpo.length === 8) {
         ValidarCEP(cepLimpo)
-    }else{
+    } else {
         statusCEP.textContent = ''
         rua.value = ''
         bairro.value = ''
         cidade.value = ''
-        estado.value = '' 
+        estado.value = ''
     }
 })
 
@@ -57,132 +57,166 @@ async function ValidarCEP(cepLimpo) {
         const resposta = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`)
         const dados = await resposta.json()
 
-        if(!resposta.ok || dados.erro){
-           statusCEP.textContent = 'CEP não encontrado'
-           statusCEP.style.color = '#dc2626'
-            return;
+        if (!resposta.ok || dados.erro) {
+            statusCEP.textContent = 'CEP não encontrado'
+            statusCEP.style.color = '#dc2626'
+            return
         }
 
         statusCEP.textContent = ''
-        rua.value = dados.logradouro 
+        rua.value = dados.logradouro
         bairro.value = dados.bairro
         cidade.value = dados.localidade
         estado.value = `${dados.estado} (${dados.uf})`
-
     } catch (error) {
-        console.log('Erro na requisição',error)
-        statusCEP.textContent = 'Erro ao consultar o CEP. Tente novamente.';
-        statusCEP.style.color = '#dc2626';
+        console.log('Erro na requisição', error)
+        statusCEP.textContent = 'Erro ao consultar o CEP. Tente novamente.'
+        statusCEP.style.color = '#dc2626'
     }
 }
 
-// Validação de Senha
-senha.addEventListener('input', function(){
+// 2. Validação de Senha em tempo real
+senha.addEventListener('input', function () {
     const valor = senha.value
 
-    // 1. Mínimo de 8 caracteres
-    const temTamanho = valor.length >=8
-    req_tamanho.classList.toggle('válido', temTamanho)
+    const temTamanho = valor.length >= 8
+    req_tamanho.classList.toggle('valido', temTamanho)
 
-    // 2. Pelo menos uma maiúscula E uma Miinúscula
     const temMaiusculaEMinuscula = /[A-Z]/.test(valor) && /[a-z]/.test(valor)
-    req_maiuscula.classList.toggle('válido', temMaiusculaEMinuscula)
+    req_maiuscula.classList.toggle('valido', temMaiusculaEMinuscula)
 
-    // 3. Pelo menos um número
     const temNumero = /\d/.test(valor)
-    req_numero.classList.toggle('válido',temNumero)
+    req_numero.classList.toggle('valido', temNumero)
 
-    // 4. Pelo menos um caractere especial
-    const temSImbolo = /[!@#$%^&*(),.?":{}|<>]/.test(valor)
+    const temSimbolo = /[!@#$%^&*(),.?":{}|<>]/.test(valor)
     req_simbolo.classList.toggle('valido', temSimbolo)
 
-    // 5. Não pode conter "senha" ou "123456" (só fica verde se o usuário já digitou algo e não usou palavras proibidas)
-    const semProibidas = valor.length > 0 && !valor.toLowerCase().includes('senha') && !valor.includes('123456');
-    req_proibidas.classList.toggle('valido', semProibidas);
+    const semProibidas =
+        valor.length > 0 &&
+        !valor.toLowerCase().includes('senha') &&
+        !valor.includes('123456')
+    req_proibidas.classList.toggle('valido', semProibidas)
 })
 
-btn_mostrar_senha.addEventListener('click', function() {
-    // Se estiver oculto (password), muda para texto e troca o ícone
+btn_mostrar_senha.addEventListener('click', function () {
     if (senha.type === 'password') {
-        senha.type = 'text';
-        btn_mostrar_senha.textContent = '🙈'; // Macaco a tapar os olhos (ou use outro emoji)
+        senha.type = 'text'
+        btn_mostrar_senha.textContent = '🙈'
     } else {
-        // Se estiver visível, volta para password
-        senha.type = 'password';
-        btn_mostrar_senha.textContent = '👁️'; // Olho aberto
+        senha.type = 'password'
+        btn_mostrar_senha.textContent = '👁️'
     }
-});
+})
 
 // 3. Calendário
-
-//Pegamos o mês e ano do momento atual
 let dataAtual = new Date()
 let mesAtual = dataAtual.getMonth()
 let anoAtual = dataAtual.getFullYear()
 
 const nomesMeses = [
-    'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
 ]
 
-function renderizarCalendario(){
-    // 1. Atualiza o título com o Mês e Ano corretos
+function renderizarCalendario() {
     mes_ano.textContent = `${nomesMeses[mesAtual]} ${anoAtual}`
-
-    // Limpa a grade antes de desenhar (para os dias não se acumularem ao trocar de mês)
     grid_dias.innerHTML = ''
 
-    // 2. Descobre o 1º dia da semana e o total de dias do mês atual
     const primeiroDiaSemana = new Date(anoAtual, mesAtual, 1).getDay()
     const totalDias = new Date(anoAtual, mesAtual + 1, 0).getDate()
 
-    // 3. Cria "casas vazias" para alinhar o dia 1 no dia da semana correto
-    for(let i = 0 ; i < totalDias; i++ ){
+    // Cria casas vazias para alinhar o dia 1 no dia da semana correto
+    for (let i = 0; i < primeiroDiaSemana; i++) {
         const espacoVazio = document.createElement('div')
         grid_dias.appendChild(espacoVazio)
     }
 
-    // 4. Cria os botões de todos os dias do mês
-    for(let dia = 1; dia <= totalDias; dia++){
+    // Cria os botões de todos os dias do mês
+    for (let dia = 1; dia <= totalDias; dia++) {
         const botaoDia = document.createElement('button')
         botaoDia.type = 'button'
         botaoDia.textContent = dia
 
-        // Quando o usuário clicar num dia:
-        botaoDia.addEventListener('click',function(){
-            // Remove a seleção azul dos outros dias
+        botaoDia.addEventListener('click', function () {
             const botoes = grid_dias.querySelectorAll('button')
             botoes.forEach(b => b.classList.remove('selecionado'))
 
-            // Pinta o botão clicado de azul
             botaoDia.classList.add('selecionado')
 
-            // Atualiza o texto de resumo (formatando com zeros: ex. 05/09/2026)
-            const diaFormatado = String(dia).padStart(2,'0')
-            const mesFormatado = String(mesAtual + 1).padStart(2,'0')
+            const diaFormatado = String(dia).padStart(2, '0')
+            const mesFormatado = String(mesAtual + 1).padStart(2, '0')
             data_escolhida.textContent = `${diaFormatado}/${mesFormatado}/${anoAtual}`
         })
 
-        // Joga o botão dentro da grade no HTML
         grid_dias.appendChild(botaoDia)
     }
 }
 
-// 5. Botões de navegação (Voltar e Avançar mês)
-mes_anterior.addEventListener('click',function(){
+mes_anterior.addEventListener('click', function () {
     mesAtual--
-    if(mesAtual < 0){
+    if (mesAtual < 0) {
         mesAtual = 11
         anoAtual--
     }
     renderizarCalendario()
 })
 
-mes_proximo.addEventListener('click',function(){
+mes_proximo.addEventListener('click', function () {
     mesAtual++
-    if(mesAtual > 11){
+    if (mesAtual > 11) {
         mesAtual = 0
         anoAtual++
     }
     renderizarCalendario()
 })
+
 renderizarCalendario()
+
+// 4. Envio do Formulário, Validação da Senha e Registro do Agendamento
+form.addEventListener('submit', function (e) {
+    e.preventDefault()
+
+    const valorNome = nome.value.trim()
+    const valorCEP = cep.value.trim()
+    const valorSenha = senha.value
+    const valorData = data_escolhida.textContent
+
+    // Verifica se a senha quebra alguma regra
+    const errosSenha = []
+
+    if (valorSenha.length < 8) {
+        errosSenha.push('- Mínimo de 8 caracteres')
+    }
+    if (!(/[A-Z]/.test(valorSenha) && /[a-z]/.test(valorSenha))) {
+        errosSenha.push('- Pelo menos 1 letra maiúscula e 1 minúscula')
+    }
+    if (!/\d/.test(valorSenha)) {
+        errosSenha.push('- Pelo menos 1 número')
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(valorSenha)) {
+        errosSenha.push('- Pelo menos 1 símbolo (!@#$...)')
+    }
+    if (valorSenha.toLowerCase().includes('senha') || valorSenha.includes('123456')) {
+        errosSenha.push('- Não conter "senha" ou "123456"')
+    }
+
+    if (errosSenha.length > 0) {
+        alert('A senha não atende às seguintes regras:\n\n' + errosSenha.join('\n'))
+        return
+    }
+
+    // Cria o registro na lista (Seção 3 do HTML)
+    const item = document.createElement('li')
+    item.textContent = `Agendado: ${valorNome} | CEP: ${valorCEP} | Data: ${valorData}`
+    lista_agendamentos.appendChild(item)
+
+    // Alert de confirmação
+    alert(`Agendamento realizado com sucesso!\n\nNome: ${valorNome}\nCEP: ${valorCEP}\nData: ${valorData}`)
+
+    // Limpa o formulário e os indicadores visuais
+    form.reset()
+    statusCEP.textContent = ''
+    data_escolhida.textContent = 'Nenhuma'
+    document.querySelectorAll('.requisitos-senha li').forEach(li => li.classList.remove('valido'))
+    grid_dias.querySelectorAll('button').forEach(b => b.classList.remove('selecionado'))
+})
