@@ -1,0 +1,321 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: #f1f5f9;
+    color: #1e293b;
+    padding: 24px;
+}
+
+/* Cabeçalho */
+.topo {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.topo h1 {
+    font-size: 1.8rem;
+    color: #0f172a;
+}
+
+.topo p {
+    color: #64748b;
+    margin-top: 6px;
+}
+
+/* Grade principal: 2 colunas lado a lado */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+    align-items: start;
+}
+
+/* Cartões brancos */
+.card {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card h2 {
+    font-size: 1.25rem;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+/* Suas classes de formulário (.cadastro, .campo-resultado, .senha) */
+.cadastro,
+.campo-resultado,
+.senha {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+/* Dá espaço extra quando há mais de um label dentro de .cadastro */
+.cadastro input+label {
+    margin-top: 14px;
+}
+
+input {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+input[readonly] {
+    background-color: #f8fafc;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+#status-cep {
+    font-size: 0.8rem;
+    margin-top: 4px;
+    min-height: 16px;
+    color: #dc2626;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 18px 0;
+}
+
+/* Lista de requisitos da senha */
+.requisitos-senha {
+    list-style: none;
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.requisitos-senha li {
+    color: #dc2626;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.requisitos-senha li:last-child {
+    margin-bottom: 0;
+}
+
+.requisitos-senha li::before {
+    content: "✕";
+    font-weight: bold;
+}
+
+.requisitos-senha li.valido {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.requisitos-senha li.valido::before {
+    content: "✓";
+}
+
+/* Calendário */
+.cabecalho-calendario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.cabecalho-calendario h3 {
+    font-size: 1rem;
+    color: #0f172a;
+}
+
+.cabecalho-calendario button {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #334155;
+}
+
+.cabecalho-calendario button:hover {
+    background: #e2e8f0;
+}
+
+.dias-semana,
+.grid-dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    text-align: center;
+}
+
+.dias-semana span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    padding-bottom: 8px;
+}
+
+/* Área temporária enquanto o JS não gera os dias */
+.grid-dias:empty {
+    min-height: 220px;
+    border: 2px dashed #e2e8f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-dias:empty::after {
+    content: "Os dias aparecerão aqui via JavaScript";
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.grid-dias button {
+    padding: 10px 0;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.grid-dias button:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.grid-dias button.selecionado {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+    font-weight: bold;
+}
+
+/* Resumo e Botão Final */
+.area-resumo {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.area-resumo p {
+    font-size: 0.95rem;
+    color: #475569;
+}
+
+.btn-confirmar {
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-confirmar:hover {
+    background: #1d4ed8;
+}
+
+.campo-senha-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.campo-senha-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+    /* Dá espaço para o olho não ficar por cima do texto */
+}
+
+#btn-mostrar-senha {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #64748b;
+}
+
+/* --- RESPONSIVIDADE PARA MOBILE --- */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    .topo {
+        margin-bottom: 20px;
+    }
+
+    .topo h1 {
+        font-size: 1.4rem;
+    }
+
+    .topo p {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        /* Força 1 coluna exata de 100%, evitando rolagem lateral */
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    input {
+        /* 16px evita que o iPhone dê zoom automático ao clicar no campo */
+        font-size: 16px;
+    }
+
+    .dias-semana,
+    .grid-dias {
+        gap: 4px;
+    }
+
+    .grid-dias button {
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+}
